@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "918927223377",
+    "project_id": "kasirbanimasum",
+    "storage_bucket": "kasirbanimasum.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918927223377:android:142e1055002d2b25c82670",
+        "android_client_info": {
+          "package_name": "com.bengkel.banimasum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlfzWQ5UmHKByLeSo1Me5TYfTom9jwF1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918927223377:android:0175204d3b09ce8ec82670",
+        "android_client_info": {
+          "package_name": "com.example.belajar_provider"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlfzWQ5UmHKByLeSo1Me5TYfTom9jwF1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
