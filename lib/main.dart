@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:belajar_provider/firebase_options.dart';
+import 'package:belajar_provider/providers/cart_provider.dart';
+import 'package:belajar_provider/screens/cashier_screen.dart';
+import 'package:belajar_provider/screens/product_management_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
@@ -38,7 +41,12 @@ void main() async {
     print('Error type: ${e.runtimeType}');
   }
 
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MainApp()));
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => CartProvider())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -50,256 +58,80 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  Future<void> deleteByName(String name) async {
-    // Query ke Firestore untuk cari dokumen dengan field "name"
-    var snapshot = await FirebaseFirestore.instance
-        .collection('products')
-        .where('name', isEqualTo: name)
-        .get();
-
-    // Loop semua hasil dan hapus
-    for (var doc in snapshot.docs) {
-      await FirebaseFirestore.instance
-          .collection('products')
-          .doc(doc.id)
-          .delete();
-      print("✅ Data dengan nama $name berhasil dihapus (ID: ${doc.id})");
-    }
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => TambahData(),
-                transitionsBuilder: (_, animation, __, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            ),
-            child: Text('Edit Data', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-        title: Text('Admin Panel', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Kasir SMK Bani Ma\'sum',
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('products').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-
-            var docs = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: docs.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => deleteByName(docs[index]['name']),
-                  child: ListTile(
-                    title: Text(docs[index]['name']),
-                    subtitle: Text(docs[index]['price'].toString()),
-                    trailing: Text(docs[index]['stock'].toString()),
-                    dense: true,
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
+      home: const MainScreen(),
     );
   }
 }
 
-class TambahData extends StatefulWidget {
-  const TambahData({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<TambahData> createState() => _TambahDataState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _TambahDataState extends State<TambahData> {
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    const CashierScreen(),
+    const ProductManagementScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _categoryProduct = TextEditingController();
-    final TextEditingController _namaProduct = TextEditingController();
-    final TextEditingController _hargaProduct = TextEditingController();
-    final TextEditingController _stockProduct = TextEditingController();
-
-    Future<void> addProduct() async {
-      try {
-        await FirebaseFirestore.instance.collection('products').add({
-          'category': _categoryProduct.text.toString(),
-          'name': _namaProduct.text.toString(),
-          'price': int.tryParse(_hargaProduct.text),
-          'stock': int.tryParse(_stockProduct.text),
-          'created_at': FieldValue.serverTimestamp(),
-        });
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Berhasil di tambah kan',
-                style: TextStyle(color: Colors.black),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Keluar', style: TextStyle(color: Colors.black)),
-                ),
-              ],
-            );
-          },
-        );
-      } catch (e) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Tejadi kesalahan',
-                style: TextStyle(color: Colors.black),
-              ),
-              content: Text(e.toString()),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Keluar', style: TextStyle(color: Colors.black)),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+      backgroundColor: Colors.black,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.1),
+              blurRadius: 20,
+              spreadRadius: 2,
+            ),
+          ],
         ),
-        title: Text('Tambah Data', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              controller: _namaProduct,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                labelText: 'Nama produk',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black, width: 2),
-                ),
-              ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey[400],
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.point_of_sale),
+              label: 'KASIR',
             ),
-            SizedBox(height: 10),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(),
-              controller: _hargaProduct,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                labelText: 'Harga produk',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black, width: 2),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(),
-              controller: _stockProduct,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                labelText: 'Stok produk',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black, width: 2),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(),
-              controller: _categoryProduct,
-              cursorColor: Colors.black,
-              decoration: InputDecoration(
-                labelText: 'Categori produk',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.black, width: 2),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 150,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: addProduct,
-                child: Text('Tambah', style: TextStyle(color: Colors.white)),
-                style: ButtonStyle(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(10),
-                    ),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(Colors.black),
-                ),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.inventory),
+              label: 'BARANG',
             ),
           ],
         ),
