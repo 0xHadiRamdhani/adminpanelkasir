@@ -88,7 +88,7 @@
 ## 📁 Struktur Proyek
 
 ```
-kasir-smk-bani-masum/
+adminpanelkasir/
 ├── android/                    # Konfigurasi Android
 ├── ios/                       # Konfigurasi iOS
 ├── lib/                       # Kode utama Flutter
