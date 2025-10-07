@@ -476,7 +476,7 @@ SOFTWARE.
 **Berikan ⭐ di GitHub!**  
 Itu gratis dan membantu developer lain menemukan proyek ini.
 
-[![GitHub stars](https://img.shields.io/github/stars/hadiramdhani/kasir-smk-bani-masum?style=social)](https://github.com/hadiramdhani/kasir-smk-bani-masum/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/hadiramdhani/kasir-smk-bani-masum?style=social)](https://github.com/HadiOnZero/adminpanelkasir)
 
 </div>
 
