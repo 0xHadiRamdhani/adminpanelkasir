@@ -431,7 +431,7 @@ Kami terbuka untuk kontribusi! Silakan:
 ```
 MIT License - SMK Bani Ma'sum
 
-Copyright (c) 2024 SMK Bani Ma'sum
+Copyright (c) 2025 SMK Bani Ma'sum
 Developer: Hadi Ramdhani
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
