@@ -1,6 +1,6 @@
-# 🏪 Aplikasi Kasir SMK Bani Ma'sum
+# Kasir SMK Bani Ma'sum
 
-Aplikasi kasir modern untuk bengkel sekolah SMK Bani Ma'sum dengan desain hitam putih bercahaya dan fitur lengkap untuk manajemen penjualan.
+A new Flutter project.
 
 ## 📱 Fitur Utama
 
