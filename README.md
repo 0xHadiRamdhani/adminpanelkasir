@@ -20,7 +20,7 @@
 <div align="center">
 
 ### 🏠 Halaman Utama Kasir
-![Cashier Screen](screenshots.png)
+![Cashier Screen](screenshot.png)
 *Tampilan utama kasir dengan grid produk dan keranjang belanja*
 
 </div>
