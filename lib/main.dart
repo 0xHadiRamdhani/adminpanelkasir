@@ -4,6 +4,8 @@ import 'package:belajar_provider/firebase_options.dart';
 import 'package:belajar_provider/providers/cart_provider.dart';
 import 'package:belajar_provider/screens/cashier_screen.dart';
 import 'package:belajar_provider/screens/product_management_screen.dart';
+import 'package:belajar_provider/services/notification_service.dart';
+import 'package:belajar_provider/services/realtime_listener_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,10 @@ void main() async {
     print('✅ Firebase initialized successfully');
     print('App name: ${app.name}');
     print('Options: ${app.options}');
+
+    // Initialize notification service
+    await NotificationService.initialize();
+    print('✅ Notification service initialized');
   } catch (e) {
     print('❌ Firebase initialization failed');
     print('Error: $e');
@@ -84,11 +90,38 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  late RealtimeListenerService _realtimeListenerService;
 
   final List<Widget> _screens = [
     const CashierScreen(),
     const ProductManagementScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeRealtimeListeners();
+  }
+
+  @override
+  void dispose() {
+    _realtimeListenerService.dispose();
+    super.dispose();
+  }
+
+  void _initializeRealtimeListeners() {
+    _realtimeListenerService = RealtimeListenerService();
+    _realtimeListenerService.initializeListeners(
+      onProductAdded: (title, message) {
+        // Tampilkan notifikasi in-app
+        NotificationService.showInAppNotification(context, title, message);
+      },
+      onNewTransaction: (title, message) {
+        // Tampilkan notifikasi in-app
+        NotificationService.showInAppNotification(context, title, message);
+      },
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {

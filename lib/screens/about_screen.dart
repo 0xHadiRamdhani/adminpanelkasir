@@ -224,6 +224,55 @@ class AboutScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 24),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[700]!),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.1),
+                    blurRadius: 8,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    'PENGEMBANG APLIKASI',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Icon(Icons.code, color: Colors.blue, size: 30),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Akmal Alhafiz',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Programmer & Developer',
+                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Backend Developer',
+                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24),
             // Footer
             Text(
