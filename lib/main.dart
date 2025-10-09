@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:belajar_provider/firebase_options.dart';
 import 'package:belajar_provider/providers/cart_provider.dart';
 import 'package:belajar_provider/screens/cashier_screen.dart';
+import 'package:belajar_provider/screens/login_screen.dart';
 import 'package:belajar_provider/screens/product_management_screen.dart';
+import 'package:belajar_provider/services/auth_service.dart';
 import 'package:belajar_provider/services/notification_service.dart';
 import 'package:belajar_provider/services/realtime_listener_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -69,14 +71,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kasir SMK Bani Ma\'sum',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        Provider(create: (_) => AuthService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Kasir SMK Bani Ma\'sum',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const AuthWrapper(),
+          '/login': (context) => const LoginScreen(),
+          '/main': (context) => const MainScreen(),
+        },
       ),
-      home: const MainScreen(),
     );
   }
 }
@@ -169,6 +182,36 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+// Widget untuk menangani autentikasi dan routing
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
+    return StreamBuilder(
+      stream: authService.authStateChanges,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(child: CircularProgressIndicator(color: Colors.white)),
+          );
+        }
+
+        if (snapshot.hasData && snapshot.data != null) {
+          // User is logged in, show main screen
+          return const MainScreen();
+        } else {
+          // User is not logged in, show login screen
+          return const LoginScreen();
+        }
+      },
     );
   }
 }

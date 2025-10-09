@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../services/auth_service.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -317,19 +318,66 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            // Back Button
+            // Logout Button
             SizedBox(
               width: double.infinity,
               height: 40,
               child: TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () async {
+                  // Konfirmasi logout
+                  final shouldLogout = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Konfirmasi Logout'),
+                      content: const Text(
+                        'Apakah Anda yakin ingin keluar dari aplikasi?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Batal'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    ),
+                  );
+
+                  if (shouldLogout == true) {
+                    try {
+                      // Lakukan logout
+                      final authService = AuthService();
+                      await authService.signOut();
+
+                      // Navigasi ke halaman login dan hapus semua route sebelumnya
+                      if (context.mounted) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/login',
+                          (route) => false,
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Gagal logout: ${e.toString()}'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  }
+                },
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.grey[400],
+                  foregroundColor: Colors.red[400],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text('KEMBALI', style: TextStyle(fontSize: 14)),
+                child: const Text('LOGOUT', style: TextStyle(fontSize: 14)),
               ),
             ),
           ],
