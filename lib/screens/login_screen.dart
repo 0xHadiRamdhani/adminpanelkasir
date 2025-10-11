@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -102,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SizedBox(height: 60),
                 // Logo or App Name
-                const Icon(Icons.point_of_sale, size: 80, color: Colors.white),
+                Icon(Icons.person_2_outlined, color: Colors.white, size: 100),
                 const SizedBox(height: 20),
                 const Text(
                   'KASIR SMK BANI MA\'SUM',
@@ -136,6 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                  cursorWidth: 1,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     labelStyle: TextStyle(color: Colors.grey[400]),
@@ -166,6 +169,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
+                  cursorColor: Colors.white,
+                  cursorWidth: 1,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     labelStyle: TextStyle(color: Colors.grey[400]),
@@ -200,11 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    overlayColor: Colors.black,
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          _isLoginMode ? 'LOGIN' : 'BUAT AKUN',
+                          _isLoginMode ? 'LOGIN' : 'TAMBAH AKUN',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -216,6 +222,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Toggle between login and register
                 TextButton(
+                  style: ButtonStyle(
+                    overlayColor: WidgetStatePropertyAll(Colors.black),
+                  ),
                   onPressed: () {
                     setState(() {
                       _isLoginMode = !_isLoginMode;
@@ -224,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     _isLoginMode
-                        ? 'Buat akun kasir baru'
+                        ? 'Tambah akun kasir baru'
                         : 'Sudah punya akun? Login',
                     style: TextStyle(color: Colors.grey[400]),
                   ),

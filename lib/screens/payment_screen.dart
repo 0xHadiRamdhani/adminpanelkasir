@@ -291,6 +291,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   TextField(
                     controller: _cashController,
                     keyboardType: TextInputType.number,
+                    cursorColor: Colors.white,
+                    cursorWidth: 1,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,

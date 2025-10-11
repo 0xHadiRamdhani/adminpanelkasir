@@ -305,6 +305,8 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                             color: Colors.white,
                             fontSize: 12,
                           ),
+                          cursorColor: Colors.white,
+                          cursorWidth: 1,
                           decoration: InputDecoration(
                             labelText: 'Nama Barang',
                             labelStyle: TextStyle(
@@ -341,6 +343,8 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                             color: Colors.white,
                             fontSize: 12,
                           ),
+                          cursorColor: Colors.white,
+                          cursorWidth: 1,
                           decoration: InputDecoration(
                             labelText: 'Kategori',
                             labelStyle: TextStyle(
@@ -378,6 +382,8 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                             color: Colors.white,
                             fontSize: 12,
                           ),
+                          cursorColor: Colors.white,
+                          cursorWidth: 1,
                           decoration: InputDecoration(
                             labelText: 'Harga',
                             labelStyle: TextStyle(
@@ -402,6 +408,10 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                               ),
                             ),
                             prefixText: 'Rp ',
+                            prefixStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 6,
@@ -416,6 +426,8 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                             color: Colors.white,
                             fontSize: 12,
                           ),
+                          cursorColor: Colors.white,
+                          cursorWidth: 1,
                           decoration: InputDecoration(
                             labelText: 'Stok',
                             labelStyle: TextStyle(

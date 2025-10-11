@@ -164,7 +164,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                   transactionId: widget.transactionId,
                   schoolName: 'SMK BANI MA\'SUM',
                   address: 'Jl. Raya Cimanggu, Kec. Cisalak, Kab. Subang',
-                  phone: '(Contoh) 085864459490',
+                  phone: ' yayasanbanimasum@gmail.com',
                   date: _transaction?.transactionDate ?? DateTime.now(),
                   items: items,
                   subtotal: widget.totalAmount,

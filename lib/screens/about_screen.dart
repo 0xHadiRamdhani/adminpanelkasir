@@ -328,18 +328,29 @@ class AboutScreen extends StatelessWidget {
                   final shouldLogout = await showDialog<bool>(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Konfirmasi Logout'),
+                      backgroundColor: Colors.black,
+                      title: const Text(
+                        'Konfirmasi Logout',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       content: const Text(
                         'Apakah Anda yakin ingin keluar dari aplikasi?',
+                        style: TextStyle(color: Colors.white),
                       ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Batal'),
+                          child: const Text(
+                            'Batal',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                         TextButton(
                           onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Logout'),
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                       ],
                     ),
