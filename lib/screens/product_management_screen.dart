@@ -25,6 +25,14 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/about-product-management');
+            },
+            icon: Icon(Icons.info_outline, color: Colors.white),
+          ),
+        ],
       ),
       body: Column(
         children: [

@@ -5,6 +5,7 @@ import 'package:belajar_provider/providers/cart_provider.dart';
 import 'package:belajar_provider/screens/cashier_screen.dart';
 import 'package:belajar_provider/screens/login_screen.dart';
 import 'package:belajar_provider/screens/product_management_screen.dart';
+import 'package:belajar_provider/screens/about_product_management_screen.dart';
 import 'package:belajar_provider/services/auth_service.dart';
 import 'package:belajar_provider/services/notification_service.dart';
 import 'package:belajar_provider/services/realtime_listener_service.dart';
@@ -88,6 +89,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const AuthWrapper(),
           '/login': (context) => const LoginScreen(),
           '/main': (context) => const MainScreen(),
+          '/about-product-management': (context) =>
+              const AboutProductManagementScreen(),
         },
       ),
     );
