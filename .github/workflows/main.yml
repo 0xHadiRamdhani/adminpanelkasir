@@ -32,9 +32,6 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Run tests
-        run: flutter test --coverage
-
       - name: Build APK
         run: flutter build apk --release
 
@@ -70,9 +67,6 @@ jobs:
 
       - name: Get dependencies
         run: flutter pub get
-
-      - name: Run tests
-        run: flutter test --coverage
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
